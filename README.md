@@ -8,4 +8,4 @@ you can then choose filters to apply. because the filters are automatically appp
 
 once these filters have been applied and added to the treeview list, you can plot again to see the affect they have had.
 
-a good test case is plotting latitude, longitude, capacity (as z/colour), and clicking plot. this resulting plot will not be very clear as the points are clumped into two distant groups. however, by adding a filter for latitude > 20, we and plotting, we get a plot of new york.
+a good test case is plotting latitude, longitude, capacity (as z/colour), and clicking plot. this resulting plot will not be very clear as the points are clumped into two distant groups. however, by adding a filter for latitude > 20, and plotting, we get a plot of new york.
