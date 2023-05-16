@@ -23,7 +23,7 @@ class PlotTab:
         # close tab button at top of tab frame
         self.close_button = tk.Button(self.plot_tab, text="Close", command=self.closeTab,
                                       bg=danger, fg=black)
-        self.close_button.pack()
+        self.close_button.pack(anchor=tk.NE)
 
         # plot frame within tab
         self.plot_frame = tk.Frame(self.plot_tab)
