@@ -6,6 +6,7 @@ blue = "#488299"
 
 teal = "#2f656e"
 teal2 = "#41a1a3"
+danger = "#ff0000"
 
 red = "#e76f51"
 red2 = "#e97c61"

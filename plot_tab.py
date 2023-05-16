@@ -16,6 +16,10 @@ class PlotTab:
         elif isinstance(parent, tk.Frame):
             self.plot_tab = parent
 
+        self.close_button = tk.Button(self.plot_tab, text="Close", command=self.closeTab,
+                                      bg=danger, fg=black)
+        self.close_button.pack()
+
         self.plot_frame = tk.Frame(self.plot_tab)
         self.plot_frame.pack(expand=True)
 
@@ -25,7 +29,9 @@ class PlotTab:
 
         function(self.plot_frame)
 
-        
+    def closeTab(self):
+        print("close")
+
 
     def plotExampleData(self):
         
