@@ -143,6 +143,7 @@ class MainWindow(tk.Tk):
     def plotData(self):
 
         if self.combo_var_x.get() == "X data" or self.combo_var_y.get() == "Y data":
+            tk.messagebox.showerror("Error", "Missing X and/or Y data, example used instead")
             PlotTab(self.notebook)
         else:
             PlotTab(self.notebook, self.plotFiltered)
