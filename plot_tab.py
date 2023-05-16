@@ -9,10 +9,10 @@ from typing import Callable
 from custom_colours import *
 
 class PlotTab:
-    def __init__(self, parent=None, function:Callable=None):
+    def __init__(self, instance=0, parent=None, function:Callable=None):
         if isinstance(parent, ttk.Notebook):
             self.plot_tab = tk.Frame(parent)
-            parent.add(self.plot_tab, text='Plot')
+            parent.add(self.plot_tab, text="Plot "+str(instance))
         elif isinstance(parent, tk.Frame):
             self.plot_tab = parent
 

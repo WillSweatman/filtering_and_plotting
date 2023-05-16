@@ -72,6 +72,7 @@ class MainWindow(tk.Tk):
         self.filter_box = filtering.FilterBox(self.filter_frame, self.headers_list, self.types)
 
         """Plotting"""
+        self.plot_instance = 0
 
         # Add a button to plot the data
         self.plot_button = tk.Button(self.tab1, text="Plot", command=self.plotData)
@@ -142,11 +143,15 @@ class MainWindow(tk.Tk):
 
     def plotData(self):
 
+        self.plot_instance += 1
+
         if self.combo_var_x.get() == "X data" or self.combo_var_y.get() == "Y data":
             tk.messagebox.showerror("Error", "Missing X and/or Y data, example used instead")
-            PlotTab(self.notebook)
+            PlotTab(self.plot_instance, self.notebook)
         else:
-            PlotTab(self.notebook, self.plotFiltered)
+            PlotTab(self.plot_instance, self.notebook, self.plotFiltered)
+
+        
     
     def plotFiltered(self, plot_frame):
     
@@ -184,6 +189,7 @@ class MainWindow(tk.Tk):
         ax.yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
 
         # Clear the plot frame
+        plt.close()
         for widget in plot_frame.winfo_children():
             widget.destroy()
 
