@@ -6,6 +6,9 @@ import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+# custom scripts
+from plot_tab import PlotTab
+
 class MainWindow(tk.Tk):
     def __init__(self):
         # Set up window
@@ -17,8 +20,6 @@ class MainWindow(tk.Tk):
         self.notebook.pack(side=tk.TOP, fill='both', expand=True)
         self.tab1 = tk.Frame(self.notebook)
         self.notebook.add(self.tab1, text='Data and Filtering')
-        self.tab2 = tk.Frame(self.notebook)
-        self.notebook.add(self.tab2, text='Plotting')
         
         # Open data and save it
         self.data, self.types, self.headers_list = custom_funcs.openCSV()
@@ -72,17 +73,9 @@ class MainWindow(tk.Tk):
 
         """Plotting"""
 
-        # Add a frame for the plot button and plot display
-        plot_frame = tk.Frame(self.tab2)
-        plot_frame.pack(pady=10)
-
         # Add a button to plot the data
         self.plot_button = tk.Button(self.tab1, text="Plot", command=self.plotData)
         self.plot_button.pack()
-
-        # Add a frame to display the plot
-        self.plot_frame = tk.Frame(self.tab2, width=300, height=200)
-        self.plot_frame.pack(pady=10)
 
     def on_closing(self):
         
@@ -149,6 +142,13 @@ class MainWindow(tk.Tk):
 
     def plotData(self):
 
+        plot_tab_return_value = PlotTab(self.notebook)
+        
+        if plot_tab_return_value==None:
+            return
+        elif type(plot_tab_return_value)==tk.Frame:
+            self.plot_frame = plot_tab_return_value
+
         self.applyFilters()
 
         if self.combo_var_x.get() == "X data" or self.combo_var_y.get() == "Y data":
@@ -198,7 +198,6 @@ class MainWindow(tk.Tk):
     def findDataTypes(self):
         for i in range(len(self.data)):
             print(i, self.data[i][0])
-
 
 
 
