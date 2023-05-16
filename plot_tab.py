@@ -10,28 +10,36 @@ from custom_colours import *
 
 class PlotTab:
     def __init__(self, instance=0, parent=None, function:Callable=None):
+
+        # where is this tab being placed
         if isinstance(parent, ttk.Notebook):
+            self.plot_notebook = parent
             self.plot_tab = tk.Frame(parent)
             parent.add(self.plot_tab, text="Plot "+str(instance))
         elif isinstance(parent, tk.Frame):
+            self.plot_notebook = parent.nametowidget(parent.winfo_parent())
             self.plot_tab = parent
 
+        # close tab button at top of tab frame
         self.close_button = tk.Button(self.plot_tab, text="Close", command=self.closeTab,
                                       bg=danger, fg=black)
         self.close_button.pack()
 
+        # plot frame within tab
         self.plot_frame = tk.Frame(self.plot_tab)
         self.plot_frame.pack(expand=True)
 
+        # plot example data if nothing given
         if function==None:
             self.plotExampleData()
             return
 
+        # if not, call the plotting function with the new plot frame
         function(self.plot_frame)
 
     def closeTab(self):
-        print("close")
-
+        # find id of tab, get notebook to remove it
+        self.plot_notebook.forget(self.plot_notebook.index(self.plot_tab))
 
     def plotExampleData(self):
         
