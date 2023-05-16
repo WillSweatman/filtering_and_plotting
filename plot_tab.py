@@ -3,37 +3,29 @@ from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from random import uniform
-from typing import Union
+from typing import Callable
 
 # my own custom classes/objects
 from custom_colours import *
 
 class PlotTab:
-    def __init__(self, parent=None, function_defined=False) -> Union[tk.Frame, None]:
-        
-        if type(parent)==ttk.Notebook:
+    def __init__(self, parent=None, function:Callable=None):
+        if isinstance(parent, ttk.Notebook):
             self.plot_tab = tk.Frame(parent)
             parent.add(self.plot_tab, text='Plot')
-
-        elif type(parent)==tk.Frame:
+        elif isinstance(parent, tk.Frame):
             self.plot_tab = parent
-
-        else:
-            tk.messagebox.showerror("Error", "Specified parent needed to plot")
-            return None
-
 
         self.plot_frame = tk.Frame(self.plot_tab)
         self.plot_frame.pack(expand=True)
 
-        # return prepped frame ready for plotting
-        if function_defined:
-            return self.plot_frame
-        
-        # else plot the random data
-        self.plotExampleData()
+        if function==None:
+            self.plotExampleData()
+            return
 
-        return
+        function(self.plot_frame)
+
+        
 
     def plotExampleData(self):
         
@@ -43,15 +35,20 @@ class PlotTab:
             widget.destroy()
 
         # generate random data
-        x = [uniform(0, 5) for _ in range(5)]
-        y = [uniform(0, 5) for _ in range(5)]
+        num = 100
+        min, max = 0, 1
+        x = [uniform(min, max) for _ in range(num)]
+        y = [uniform(min, max) for _ in range(num)]
+        z = [uniform(min, max) for _ in range(num)]
 
         # plot example data
         fig, ax = plt.subplots()
-        ax.scatter(x, y)
+        scatter = ax.scatter(x, y, c=z, vmin=min, vmax=max, cmap="viridis")
         ax.set_title("Example Plot")
         ax.set_xlabel("x")
         ax.set_ylabel("y")
+        cbar = fig.colorbar(scatter)
+        cbar.set_label("z")
         plt.tight_layout()
 
         # display the plot in the plot frame

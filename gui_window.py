@@ -142,18 +142,14 @@ class MainWindow(tk.Tk):
 
     def plotData(self):
 
-        plot_tab_return_value = PlotTab(self.notebook)
-        
-        if plot_tab_return_value==None:
-            return
-        elif type(plot_tab_return_value)==tk.Frame:
-            self.plot_frame = plot_tab_return_value
-
-        self.applyFilters()
-
         if self.combo_var_x.get() == "X data" or self.combo_var_y.get() == "Y data":
-                tk.messagebox.showerror("Error", "Please select X and Y data")
-                return
+            PlotTab(self.notebook)
+        else:
+            PlotTab(self.notebook, self.plotFiltered)
+    
+    def plotFiltered(self, plot_frame):
+    
+        self.applyFilters()
 
         # Get the x and y data from the combo boxes
         x_choice = self.combo_var_x.get()
@@ -187,11 +183,11 @@ class MainWindow(tk.Tk):
         ax.yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
 
         # Clear the plot frame
-        for widget in self.plot_frame.winfo_children():
+        for widget in plot_frame.winfo_children():
             widget.destroy()
 
         # Display the plot in the plot frame
-        canvas = FigureCanvasTkAgg(fig, self.plot_frame)
+        canvas = FigureCanvasTkAgg(fig, plot_frame)
         canvas.draw()
         canvas.get_tk_widget().pack()
 
