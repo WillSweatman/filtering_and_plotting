@@ -86,8 +86,6 @@ def openCSV():
 
             data.append(row)
 
-
-    #print(len(data),"rows from csv loaded")
     t_data, types = transposeData(data)
     return t_data, types, headers_list
 
@@ -95,7 +93,6 @@ def on_closing(self):
         
         # Get a list of all the figure numbers
         fig_total = plt.get_fignums()
-        #print("Graphs created:",len(fig_total))
 
         # Loop over the figure numbers and close each figure
         for fig_num in fig_total:

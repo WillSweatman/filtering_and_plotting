@@ -6,15 +6,14 @@ import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-class MyWindow(tk.Frame):
-    def __init__(self, master=None):
+class MainWindow(tk.Tk):
+    def __init__(self):
         # Set up window
-        super().__init__(master)
-        self.master = master
-        self.master.title("My Window")
-        self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
+        super().__init__()
+        self.title("My Window")
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.notebook = ttk.Notebook(self.master)
+        self.notebook = ttk.Notebook(self)
         self.notebook.pack(side=tk.TOP, fill='both', expand=True)
         self.tab1 = tk.Frame(self.notebook)
         self.notebook.add(self.tab1, text='Data and Filtering')
@@ -97,7 +96,7 @@ class MyWindow(tk.Frame):
             plt.close(fig)
 
         # Close main window
-        self.master.destroy()
+        self.destroy()
 
     def populateCombo(self, combo):
         # This line allows all data, not just int/float
@@ -122,12 +121,11 @@ class MyWindow(tk.Frame):
 
         # get filters
         current_filters = self.filter_box.getFilterList()
-        # indices we will scrap
+        # indices we will scrap (not display)
         scrapped_indices = []
 
         # apply filters
         for fil in current_filters:
-            #print(fil)
             check_value = self.filter_box.getEntryType(fil[2])[1]
             for idx, point in enumerate(self.data[self.headers_list.index(fil[0])]):
                 if "=" in fil[1]:
@@ -148,9 +146,6 @@ class MyWindow(tk.Frame):
             if idx not in scrapped_indices:
                 for col in range(len(self.data)):
                     self.data_filtered[col].append(self.data[col][idx])
-
-        #print(self.data_filtered)
-
 
     def plotData(self):
 
@@ -173,8 +168,6 @@ class MyWindow(tk.Frame):
         data_to_plot_x = self.data_filtered[self.x_index]
         data_to_plot_y = self.data_filtered[self.y_index]
         
-        # Create a scatter plot using Matplotlib
-
         fig, ax = plt.subplots()
         if c_choice == "Colour data":
             im = ax.scatter(data_to_plot_x, data_to_plot_y, marker = 'x')
@@ -198,10 +191,21 @@ class MyWindow(tk.Frame):
             widget.destroy()
 
         # Display the plot in the plot frame
-        canvas = FigureCanvasTkAgg(fig, master=self.plot_frame)
+        canvas = FigureCanvasTkAgg(fig, self.plot_frame)
         canvas.draw()
         canvas.get_tk_widget().pack()
 
     def findDataTypes(self):
         for i in range(len(self.data)):
             print(i, self.data[i][0])
+
+
+
+
+
+
+if __name__ == "__main__":
+    app = MainWindow()
+    app.mainloop()
+
+    print("**End**")
