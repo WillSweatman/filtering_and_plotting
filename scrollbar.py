@@ -55,4 +55,8 @@ class ReorderableListbox(ttk.Frame):
 
     def getFilterOrder(self):
         return [self.treeview.item(iid)['values'] for iid in self.treeview.get_children()]
+    
+    def combineFilters(self):
+        self.final_filters = []
+        
 

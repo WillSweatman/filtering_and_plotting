@@ -3,13 +3,13 @@ from tkinter import ttk
 import scrollbar
 
 class FilterBox(ttk.Frame):
-    def __init__(self, master, headers_list, types):
-        super().__init__(master)
+    def __init__(self, parent, headers_list, types):
+        super().__init__(parent)
 
-        tk.Label(master, text='Filtering', font=('Arial', 22)).pack(side=tk.TOP)
+        tk.Label(parent, text='Filtering', font=('Arial', 22)).pack(side=tk.TOP)
 
         # Create the top frame and add some widgets to it
-        self.top_frame = tk.Frame(master, height=100, width=200)
+        self.top_frame = tk.Frame(parent, height=100, width=200)
         self.top_frame.pack(side=tk.TOP)
 
         tk.Label(self.top_frame, text='Filters', font=('Arial', 16))
@@ -49,8 +49,11 @@ class FilterBox(ttk.Frame):
         self.error_label = tk.Label(self.top_frame)
         self.error_label.pack(side=tk.LEFT)
 
+        self.filter_label = tk.Label(parent, text="Filters are drag-and-dropable")
+        self.filter_label.pack()
+
         # Create the bottom frame and add some widgets to it
-        self.bottom_frame = tk.Frame(master, height=100, width=200)
+        self.bottom_frame = tk.Frame(parent, height=100, width=200)
         self.bottom_frame.pack(side=tk.TOP)
 
         self.reorderable_listbox = scrollbar.ReorderableListbox(self.bottom_frame, [])

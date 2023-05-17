@@ -27,9 +27,11 @@ class MainWindow(tk.Tk):
         # make a copy to then filter
         self.data_filtered = self.data[:]
 
-        self.mainTabContent()
+        self.pickDataContent()
+        self.pickFilterContent()
+        self.pickPlotContent()
         
-    def mainTabContent(self):
+    def pickDataContent(self):
 
         # Add a label to the window
         data_label = tk.Label(self.tab1, text="Pick Data", font=('Arial', 22))
@@ -65,16 +67,15 @@ class MainWindow(tk.Tk):
         self.populateCombo(self.combo_y)
         self.populateCombo(self.combo_c)
 
-        """Filtering"""
-
-        #self.findDataTypes()
+    def pickFilterContent(self):
         
         self.filter_frame = tk.Frame(self.tab1)
         self.filter_frame.pack(pady=10)
 
         self.filter_box = filtering.FilterBox(self.filter_frame, self.headers_list, self.types)
 
-        """Plotting"""
+    def pickPlotContent(self):
+
         self.plot_instance = 0
 
         # button to plot the data
