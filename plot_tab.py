@@ -21,7 +21,7 @@ class PlotTab:
             self.plot_tab = parent
 
         # close tab button at top of tab frame
-        self.close_button = tk.Button(self.plot_tab, text="Close", command=self.closeTab,
+        self.close_button = tk.Button(self.plot_tab, text="Close Tab", command=self.closeTab,
                                       bg=danger, fg=black)
         self.close_button.pack(anchor=tk.NE)
 
