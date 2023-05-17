@@ -8,7 +8,10 @@ class ReorderableListbox(ttk.Frame):
         
         # Create the Treeview widget and add columns
         self.treeview = ttk.Treeview(self, columns=["c1","c2","c3"], selectmode="browse")
-        self.treeview.column("#0", width=0)
+        # shrink width of iid column to 0
+        self.treeview.column("#0", minwidth=0, width=0)
+        # set column headings
+        self.treeview.heading("0", text="iid")
         self.treeview.heading("c1", text="Variable")
         self.treeview.heading("c2", text="Operation")
         self.treeview.heading("c3", text="Value")
@@ -33,26 +36,22 @@ class ReorderableListbox(ttk.Frame):
         self.dragged_iid = None
     
     def on_select(self, event):
-        # Remember the ID of the item that was clicked
-        item_id = self.treeview.identify_row(event.y)
-        if item_id != "":
-            self.dragged_iid = item_id
-    
+        iid = self.treeview.identify_row(event.y)
+        if iid != "":
+            self.dragged_iid = iid
+       
     def on_drag(self, event):
-        # Reorder the items as the mouse is dragged
-        if self.dragged_iid is not None:
+        if self.dragged_iid != None:
             new_index = self.treeview.index(self.treeview.identify_row(event.y))
             if new_index != "":
                 self.treeview.move(self.dragged_iid, "", new_index)
-    
+
     def on_release(self, event):
-        # Save the new order of the items
         self.dragged_iid = None
-        new_order = [self.treeview.item(iid)['text'] for iid in self.treeview.get_children()]
-        #print(new_order)  # replace with your own code to save the new order
 
     def addItem(self, new_item):
-        self.treeview.insert("", "end", values=new_item)
+        self.treeview.insert("", "end", text=len(self.treeview.get_children()),
+                             values=new_item)
 
     def getFilterOrder(self):
         return [self.treeview.item(iid)['values'] for iid in self.treeview.get_children()]

@@ -11,22 +11,25 @@ from plot_tab import PlotTab
 
 class MainWindow(tk.Tk):
     def __init__(self):
-        # Set up window
         super().__init__()
         self.title("My Window")
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
-
+        
+        # create notebook, and add main tab
         self.notebook = ttk.Notebook(self)
         self.notebook.pack(side=tk.TOP, fill='both', expand=True)
         self.tab1 = tk.Frame(self.notebook)
         self.notebook.add(self.tab1, text='Data and Filtering')
         
-        # Open data and save it
+        # open data and save it
         self.data, self.types, self.headers_list = custom_funcs.openCSV()
 
-        self.data_filtered = self.data
+        # make a copy to then filter
+        self.data_filtered = self.data[:]
+
+        self.mainTabContent()
         
-        """Data Entry"""
+    def mainTabContent(self):
 
         # Add a label to the window
         data_label = tk.Label(self.tab1, text="Pick Data", font=('Arial', 22))
@@ -70,9 +73,6 @@ class MainWindow(tk.Tk):
         self.filter_frame.pack(pady=10)
 
         self.filter_box = filtering.FilterBox(self.filter_frame, self.headers_list, self.types)
-
-
-
 
         """Plotting"""
         self.plot_instance = 0
