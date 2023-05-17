@@ -86,6 +86,6 @@ class PlotTab:
 
     def closeTab(self):
         # find id of tab, get notebook to remove it
-        self.plot_notebook.forget(self.plot_notebook.index(self.plot_tab))
-
+        index = self.plot_notebook.index(self.plot_tab)
+        self.plot_notebook.forget(index)
         self.updateList()

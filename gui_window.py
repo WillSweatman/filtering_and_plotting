@@ -93,20 +93,20 @@ class MainWindow(tk.Tk):
         self.or_label.pack()
 
         # variable to store the selected option
-        self.tab_options = tk.StringVar(self)
+        self.tab_option = tk.StringVar(self)
 
         # define options
         self.options = [self.notebook.tab(tab)['text'] for tab in self.notebook.tabs()]
 
         # default value for the dropdown
-        self.tab_options.set("Select an option")
+        self.tab_option.set("Select an option")
 
         #dropdown to select plot frame to update
-        self.tabs_dropdown = tk.OptionMenu(self.update_frame, self.tab_options, *self.options)
+        self.tabs_dropdown = tk.OptionMenu(self.update_frame, self.tab_option, *self.options)
         self.tabs_dropdown.pack()
 
         # button to update plot with changes
-        self.plot_button = tk.Button(self.update_frame, text="Update", command=self.plotData)
+        self.plot_button = tk.Button(self.update_frame, text="Update", command=self.updatePlot)
         self.plot_button.pack()
 
     def toggleFrameVisibility(self, frame:tk.Frame, condition:bool):
@@ -204,11 +204,15 @@ class MainWindow(tk.Tk):
 
         self.tabs_dropdown["menu"].delete(0, "end")
         for option in self.options:
-            self.tabs_dropdown["menu"].add_command(label=option, command=tk._setit(self.tab_options, option))
+            self.tabs_dropdown["menu"].add_command(label=option, command=tk._setit(self.tab_option, option))
 
     def updatePlot(self):
-        pass
-    
+        for index in range(self.notebook.index("end")):
+            tab_label = self.notebook.tab(index, option="text")
+            if tab_label == self.tab_option.get():
+                print(tab_label)
+                break
+        
     def plotFiltered(self, plot_frame):
     
         self.applyFilters()
