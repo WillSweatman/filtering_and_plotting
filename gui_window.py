@@ -109,7 +109,6 @@ class MainWindow(tk.Tk):
         self.plot_button.pack()
 
     def toggleFrameVisibility(self, frame:tk.Frame, condition:bool):
-        print(condition)
         if condition:
             frame.pack_forget()
         else:
@@ -179,7 +178,7 @@ class MainWindow(tk.Tk):
                     self.data_filtered[col].append(self.data[col][idx])
 
     def plotData(self):
-
+        
         self.plot_instance += 1
 
         if self.combo_var_x.get() == "X data" or self.combo_var_y.get() == "Y data":
@@ -188,8 +187,12 @@ class MainWindow(tk.Tk):
         else:
             PlotTab(self.updateTabOptions, self.plot_instance, self.notebook, self.plotFiltered)
 
+        # add new tab to tab options list
         self.updateTabOptions()
-        
+
+        # select new tab
+        last_tab_index = self.notebook.index("end") - 1
+        self.notebook.select(last_tab_index) 
         
     def updateTabOptions(self):
         # toggle frame visibility based on the presence of any plot frames

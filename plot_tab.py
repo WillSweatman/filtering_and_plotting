@@ -34,7 +34,7 @@ class PlotTab:
 
         # use function, or plot example
         self.checkForFunction(function)
-
+        
     def checkForFunction(self, function):
         # plot example data if nothing given
         if function==None:
