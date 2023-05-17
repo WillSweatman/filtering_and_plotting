@@ -29,6 +29,10 @@ class PlotTab:
         self.plot_frame = tk.Frame(self.plot_tab)
         self.plot_frame.pack(expand=True)
 
+        # use function, or plot example
+        self.checkForFunction(function)
+
+    def checkForFunction(self, function):
         # plot example data if nothing given
         if function==None:
             self.plotExampleData()
@@ -36,10 +40,6 @@ class PlotTab:
 
         # if not, call the plotting function with the new plot frame
         function(self.plot_frame)
-
-    def closeTab(self):
-        # find id of tab, get notebook to remove it
-        self.plot_notebook.forget(self.plot_notebook.index(self.plot_tab))
 
     def plotExampleData(self):
         
@@ -69,3 +69,18 @@ class PlotTab:
         canvas = FigureCanvasTkAgg(fig, master=self.plot_frame)
         canvas.draw()
         canvas.get_tk_widget().pack()
+
+    def updateTab(self, function:Callable=None):
+        # destroy all widgets in the plot frame
+        for widget in self.plot_frame.winfo_children():
+            widget.destroy()
+
+        # note that the close button is in plot_tab, not plot_frame,
+        # so it doesnt need to be recreated, it continues to exist
+
+        # use function, or plot example
+        self.checkForFunction(function)
+
+    def closeTab(self):
+        # find id of tab, get notebook to remove it
+        self.plot_notebook.forget(self.plot_notebook.index(self.plot_tab))
