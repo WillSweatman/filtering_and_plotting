@@ -9,7 +9,10 @@ from typing import Callable
 from custom_colours import *
 
 class PlotTab:
-    def __init__(self, instance=0, parent=None, function:Callable=None):
+    def __init__(self, updateOptionsListFunction:Callable, instance=0, parent=None, function:Callable=None):
+        
+        # called when a tab is closed
+        self.updateList = updateOptionsListFunction
 
         # where is this tab being placed
         if isinstance(parent, ttk.Notebook):
@@ -84,3 +87,5 @@ class PlotTab:
     def closeTab(self):
         # find id of tab, get notebook to remove it
         self.plot_notebook.forget(self.plot_notebook.index(self.plot_tab))
+
+        self.updateList()

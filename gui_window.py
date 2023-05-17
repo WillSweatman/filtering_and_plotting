@@ -71,12 +71,49 @@ class MainWindow(tk.Tk):
 
         self.filter_box = filtering.FilterBox(self.filter_frame, self.headers_list, self.types)
 
+
+
+
         """Plotting"""
         self.plot_instance = 0
 
-        # Add a button to plot the data
-        self.plot_button = tk.Button(self.tab1, text="Plot", command=self.plotData)
+        # button to plot the data
+        self.plot_button = tk.Button(self.tab1, text="Plot New", command=self.plotData)
         self.plot_button.pack()
+
+        # update plot frame
+        self.update_frame = tk.Frame(self.tab1)
+
+        # toggle frame visibility based on the presence of any plot frames
+        self.toggleFrameVisibility(self.update_frame, len(self.notebook.tabs()) <= 1)
+
+         # some helpful text
+        self.or_label = tk.Label(self.update_frame, text="OR Update Existing")
+        self.or_label.pack()
+
+        # variable to store the selected option
+        self.tab_options = tk.StringVar(self)
+
+        # define options
+        self.options = [self.notebook.tab(tab)['text'] for tab in self.notebook.tabs()]
+
+        # default value for the dropdown
+        self.tab_options.set("Select an option")
+
+        #dropdown to select plot frame to update
+        self.tabs_dropdown = tk.OptionMenu(self.update_frame, self.tab_options, *self.options)
+        self.tabs_dropdown.pack()
+
+        # button to update plot with changes
+        self.plot_button = tk.Button(self.update_frame, text="Update", command=self.plotData)
+        self.plot_button.pack()
+
+    def toggleFrameVisibility(self, frame:tk.Frame, condition:bool):
+        print(condition)
+        if condition:
+            frame.pack_forget()
+        else:
+            frame.pack()
 
     def on_closing(self):
         
@@ -147,11 +184,26 @@ class MainWindow(tk.Tk):
 
         if self.combo_var_x.get() == "X data" or self.combo_var_y.get() == "Y data":
             tk.messagebox.showerror("Error", "Missing X and/or Y data, example used instead")
-            PlotTab(self.plot_instance, self.notebook)
+            PlotTab(self.updateTabOptions, self.plot_instance, self.notebook)
         else:
-            PlotTab(self.plot_instance, self.notebook, self.plotFiltered)
+            PlotTab(self.updateTabOptions, self.plot_instance, self.notebook, self.plotFiltered)
 
+        self.updateTabOptions()
         
+        
+    def updateTabOptions(self):
+        # toggle frame visibility based on the presence of any plot frames
+        self.toggleFrameVisibility(self.update_frame, len(self.notebook.tabs()) <= 1)
+
+        # update tab options
+        self.options = [self.notebook.tab(tab)['text'] for tab in self.notebook.tabs()[1:]]
+
+        self.tabs_dropdown["menu"].delete(0, "end")
+        for option in self.options:
+            self.tabs_dropdown["menu"].add_command(label=option, command=tk._setit(self.tab_options, option))
+
+    def updatePlot(self):
+        pass
     
     def plotFiltered(self, plot_frame):
     
