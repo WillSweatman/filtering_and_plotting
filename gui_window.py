@@ -77,6 +77,7 @@ class MainWindow(tk.Tk):
     def pickPlotContent(self):
 
         self.plot_instance = 0
+        self.plot_tab_list = []
 
         # button to plot the data
         self.plot_button = tk.Button(self.tab1, text="Plot New", command=self.plotData)
@@ -184,9 +185,9 @@ class MainWindow(tk.Tk):
 
         if self.combo_var_x.get() == "X data" or self.combo_var_y.get() == "Y data":
             tk.messagebox.showerror("Error", "Missing X and/or Y data, example used instead")
-            PlotTab(self.updateTabOptions, self.plot_instance, self.notebook)
+            self.plot_tab_list.append(PlotTab(self.updateTabOptions, self.plot_instance, self.notebook))
         else:
-            PlotTab(self.updateTabOptions, self.plot_instance, self.notebook, self.plotFiltered)
+            self.plot_tab_list.append(PlotTab(self.updateTabOptions, self.plot_instance, self.notebook, self.plotFiltered))
 
         # add new tab to tab options list
         self.updateTabOptions()
@@ -210,7 +211,8 @@ class MainWindow(tk.Tk):
         for index in range(self.notebook.index("end")):
             tab_label = self.notebook.tab(index, option="text")
             if tab_label == self.tab_option.get():
-                print(tab_label)
+                print(index)
+                self.plot_tab_list[index-1].updateTab(self.plotFiltered)
                 break
         
     def plotFiltered(self, plot_frame):
